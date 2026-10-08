@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  api_backend:
+    image: bugan/backend-hermex-api
+    container_name: api_backend_hermex
+    # Descomente a linha abaixo se estiver usando Mac M1/M2/M3 e a imagem falhar ao rodar
+    # platform: linux/amd64
+    ports:
+      - "3333:3333"
+    restart: always

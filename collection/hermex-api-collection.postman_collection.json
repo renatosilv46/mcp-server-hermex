@@ -1,0 +1,324 @@
+{
+  "info": {
+    "_postman_id": "hermex-api-collection",
+    "name": "Hermex API",
+    "description": "Collection da API REST da Hermex Locadora de Veículos. Base URL padrão: http://localhost:3333. Nenhuma rota exige autenticação.",
+    "schema": "https://getpostman.com"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3333"
+    },
+    {
+      "key": "carId",
+      "value": "hb20"
+    },
+    {
+      "key": "locationId",
+      "value": ""
+    },
+    {
+      "key": "protectionId",
+      "value": "basica"
+    },
+    {
+      "key": "reservationId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health",
+            "description": "Verifica se a API está no ar."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cars",
+      "item": [
+        {
+          "name": "Listar carros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars?category=&q=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Filtro opcional por categoria",
+                  "disabled": true
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Busca opcional por nome",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lista o catálogo de veículos."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar categorias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/cars/categories",
+            "description": "Lista as categorias disponíveis para filtro."
+          },
+          "response": []
+        },
+        {
+          "name": "Detalhe do carro",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/cars/{{carId}}",
+            "description": "Busca um veículo por id ou slug."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Availability",
+      "item": [
+        {
+          "name": "Disponibilidade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/availability?pickupLocationId={{locationId}}&returnLocationId={{locationId}}&pickupDate=2026-09-20&returnDate=2026-09-24&category=&q=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "availability"
+              ],
+              "query": [
+                {
+                  "key": "pickupLocationId",
+                  "value": "{{locationId}}",
+                  "description": "Obrigatório"
+                },
+                {
+                  "key": "returnLocationId",
+                  "value": "{{locationId}}",
+                  "description": "Obrigatório"
+                },
+                {
+                  "key": "pickupDate",
+                  "value": "2026-09-20",
+                  "description": "YYYY-MM-DD"
+                },
+                {
+                  "key": "returnDate",
+                  "value": "2026-09-24",
+                  "description": "YYYY-MM-DD"
+                },
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Opcional",
+                  "disabled": true
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Opcional",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lista veículos disponíveis no período, sem overlap com reservas CONFIRMED. Preencha locationId com um id retornado por GET /api/locations."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Listar locais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/locations",
+            "description": "Lista locais de retirada e devolução. Use o id retornado nas variáveis locationId."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Protections",
+      "item": [
+        {
+          "name": "Listar proteções",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/protections",
+            "description": "Lista planos Básica / Padrão / Avançada."
+          },
+          "response": []
+        },
+        {
+          "name": "Detalhe da proteção",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/protections/{{protectionId}}",
+            "description": "Busca proteção por id ou slug."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar proteção",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"premium\",\n  \"name\": \"Premium\",\n  \"pricePerDay\": 150,\n  \"benefits\": [\n    \"Proteção contra roubo\",\n    \"Isenção total de coparticipação\"\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/protections",
+            "description": "Cria um novo plano de proteção."
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar proteção",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Plus\",\n  \"pricePerDay\": 180,\n  \"benefits\": [\n    \"Proteção contra roubo\",\n    \"Isenção total de coparticipação\",\n    \"Assistência 24h\"\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/protections/{{protectionId}}",
+            "description": "Atualiza um plano de proteção (parcial). Informe ao menos um campo."
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir proteção",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/protections/{{protectionId}}",
+            "description": "Remove um plano de proteção (falha se estiver vinculado a reservas)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Cotação de reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": \"{{carId}}\",\n  \"pickupLocationId\": \"{{locationId}}\",\n  \"returnLocationId\": \"{{locationId}}\",\n  \"pickupDate\": \"2026-09-20\",\n  \"pickupTime\": \"10:00\",\n  \"returnDate\": \"2026-09-24\",\n  \"returnTime\": \"10:00\",\n  \"protectionId\": \"{{protectionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/reservations/quote",
+            "description": "Simula diárias e total sem criar a reserva. Preencha locationId com um id de GET /api/locations."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar reservas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservations",
+            "description": "Lista todas as reservas."
+          },
+          "response": []
+        },
+        {
+          "name": "Criar reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": \"{{carId}}\",\n  \"pickupLocationId\": \"{{locationId}}\",\n  \"returnLocationId\": \"{{locationId}}\",\n  \"pickupDate\": \"2026-09-20\",\n  \"pickupTime\": \"10:00\",\n  \"returnDate\": \"2026-09-24\",\n  \"returnTime\": \"10:00\",\n  \"protectionId\": \"{{protectionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/reservations",
+            "description": "Confirma uma reserva. A resposta inclui o code (ex.: XYZH6013). Salve o id ou code na variável reservationId."
+          },
+          "response": []
+        },
+        {
+          "name": "Detalhe da reserva",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservations/{{reservationId}}",
+            "description": "Busca reserva por id ou código."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar reserva",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservations/{{reservationId}}/cancel",
+            "description": "Cancela uma reserva pelo id ou código."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

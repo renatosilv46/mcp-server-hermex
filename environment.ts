@@ -1,4 +1,4 @@
-const Environment = {
+export const Environment = {
     production: false,
     HERMEX_API_URL: 'http://localhost:3333/api'
 }

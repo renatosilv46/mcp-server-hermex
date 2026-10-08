@@ -2,6 +2,7 @@ import { createMcpExpressApp } from "@modelcontextprotocol/express";
 import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
+import { Environment } from "./environment";
 
 const app = createMcpExpressApp();
 
